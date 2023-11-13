@@ -4,6 +4,7 @@ import shutil
 import tarfile
 from trainer_pti import main
 from preprocess import preprocess
+
 """
 Wrapper around actual trainer.
 """
@@ -11,10 +12,13 @@ MODEL_NAME = "segmind/SSD-1B"
 MODEL_CACHE = "model-cache"
 OUTPUT_DIR = "training_out"
 
+
 class TrainingOutput(BaseModel):
     weights: Path
 
+
 from typing import Tuple
+
 
 def train(
     input_images: Path = Input(
@@ -35,10 +39,6 @@ def train(
     num_train_epochs: int = Input(
         description="Number of epochs to loop through your training dataset",
         default=2000,
-    ),
-    max_train_steps: int = Input(
-        description="Number of individual training steps. Takes precedence over num_train_epochs",
-        default=500,
     ),
     is_lora: bool = Input(
         description="Whether to use LoRA training. If set to False, will use Full fine tuning",
@@ -150,7 +150,7 @@ def train(
         resolution=resolution,
         train_batch_size=train_batch_size,
         num_train_epochs=num_train_epochs,
-        max_train_steps=max_train_steps,
+        max_train_steps=None,
         gradient_accumulation_steps=1,
         unet_learning_rate=unet_learning_rate,
         ti_lr=ti_lr,
